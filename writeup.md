@@ -1,6 +1,5 @@
 1081s - loss: 0.0075 - acc: 7.5927e-04 - val_loss: 0.0250 - val_acc: 0.0000e+00
 # **Behavioral Cloning Project**
-
 ---
 The goals / steps of this project are the following:
 * Use the simulator to collect data of good driving behavior

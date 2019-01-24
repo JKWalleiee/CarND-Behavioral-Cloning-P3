@@ -35,13 +35,17 @@ The goals / steps of this project are the following:
 #### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
-* model.py containing the script to create and train the model
-* drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* **model.py** Contains the script to create and train the model.
+* **cnn_models.py** Contains the models used for training in this project.
+* **drive.py** Script for driving the car in autonomous mode. (This file was provided by Udacity)
+* **model.h5** Contains a trained convolution neural network. (This model works for the first track) 
+* **writeup.md** Report summarizing the results (this file)
+
+Extra file:
+* **Visualizations.ipynb** Notebook that contains the visualizations I used to create this report, and the process of balancing the dataset.
 
 #### 2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the first track by executing 
 ```sh
 python drive.py model.h5
 ```
@@ -54,25 +58,24 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
-
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+For my final model, I use the [Model nVidia Autonomous Car Group](https://arxiv.org/pdf/1604.07316v1.pdf) (cnn_models.py line 32). In section "2. Final Model Architecture" it can be observed a more detailed description of this CNN. My implementation includes RELU layers to introduce nonlinearity, a Keras lambda layer for normalization of the data and a Keras Cropping2d layer (cnn_models.py lines 8-9).
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
-
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+I did not to modify the model by applying regularization techniques like Dropout or Max pooling. Instead, I concentrated on the following approaches:
+* I used only one epoch.
+* I used augmenting methods: counter clockwise and clockwise driving data, change brigthness of the image (model.py line 10), flip the images (model.py lines 38-40).
+* My model was trained and validated on different data sets to ensure that the model was not overfitting (model.py line 64). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 73).
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+The training and validation datasets were selected from a balanced subset of the Udacity dataset. I used a combination of the three cameras: center, left and right, using a correction factor for the steering angles of 0.2 (0.2 for the left, -0.2 for the right). The original dataset was balanced with the goal of improving the efficiency of the classifier in the first track. The steps of this data balancing can be observed in the section "3. Creation of the Training Set & Training Process" and in the Notebook [balance_and_visualization.ipynb](https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/balance_and_visualization.ipynb).
 
-For details about how I created the training data, see the next section. 
+In this balanced dataset, I duplicate the data through the flipping of all the images, and I augment the data of the classes lacking data, that is, classes where: abs(angle)>0.5 (0.5~12.5 in the simulator) by changing the brightness of the original and flipped image. (model.py lines 38-52)
 
 ### Model Architecture and Training Strategy
 

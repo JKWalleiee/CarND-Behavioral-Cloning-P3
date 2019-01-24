@@ -55,8 +55,8 @@ For my final model, I use the [Model nVidia Autonomous Car Group](https://arxiv.
 #### 2. Attempts to reduce overfitting in the model
 
 I did not to modify the model by applying regularization techniques like Dropout or Max pooling. Instead, I concentrated on the following approaches:
-* I used only one epoch.
-* I used augmenting methods: counter clockwise and clockwise driving data, change brigthness of the image (model.py line 10), flip the images (model.py lines 38-40).
+* I used only one training epoch.
+* I used augmentation data methods: I used counter clockwise and clockwise driving data,  I changed the brightness of some of the images (model.py line 10), and flipped the images (model.py lines 38-40).
 * My model was trained and validated on different data sets to ensure that the model was not overfitting (model.py line 64). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
@@ -67,7 +67,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 The training and validation datasets were selected from a balanced subset of the Udacity dataset. I used a combination of the three cameras: center, left and right, using a correction factor for the steering angles of 0.2 (0.2 for the left, -0.2 for the right). The original dataset was balanced with the goal of improving the efficiency of the classifier in the first track. The steps of this data balancing can be observed in the section "3. Creation of the Training Set & Training Process" and in the Notebook [balance_and_visualization.ipynb](https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/balance_and_visualization.ipynb).
 
-In this balanced dataset, I duplicate the data through the flipping of all the images, and I augment the data of the classes lacking data, that is, classes where: abs(angle)>0.5 (0.5~12.5 in the simulator) by changing the brightness of the original and flipped image. (model.py lines 38-52)
+In this balanced dataset, I duplicate the data through the flipping of all the images, and I augment the images of the classes lacking data, that is, classes where: abs(angle)>0.5 (0.5~12.5 in the simulator), by changing the brightness of the original and flipped image. (model.py lines 38-52)
 
 ### Model Architecture and Training Strategy
 

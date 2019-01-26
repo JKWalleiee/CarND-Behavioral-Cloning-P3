@@ -75,7 +75,10 @@ In this balanced dataset, I duplicate the data through the flipping of all the i
 
 I used 3 types of networks: a linear regression model, a lenet model, and, my final model, a nVidia autonomous vehicle model. I took an iterative approach for the tests with this networks. For this three models, I used the Udacity sample driving data.
 
-Once I verified that my scripts were working correctly, I added a preprocessing layer and a clipping layer to the beginning of my models (x). After this, I started my second iteration, using the lenet model. When I trained this model and used it on the first track of the simulator, the car navigates very close to the curves, and on a section of the road where the edge is not marked (see figure), it went off the road.
+Once I verified that my scripts were working correctly, I added a preprocessing layer and a clipping layer to the beginning of my models (x). After this, I started my second iteration, using the lenet model. When I trained this model and used it on the first track of the simulator, the car navigates very close to the curves (fig. 3.1), and on a section of the road where the edge is not marked (fig. 3.2), it went off the road.
+
+
+![Augmented Image - Rotation](./info_output/cropped_image.jpg "image title")
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 

@@ -107,14 +107,16 @@ The final model architecture is shown in the following table:
 | RELU					|												|
 | Convolution2D 5x5     	| kernel: (3,3), strides: (1,1), filters: (64)	|
 | RELU					|												|
-| Fully connected		| input 400, output 120      									|
-| RELU					|												|
-| Dropout					|					50% keep (Train)							|
-| Fully connected		| input 120, output 84      									|
-| RELU					|												|
-| Fully connected		| input 84, output 43      									|
+| Fully connected		| input 8448, output 100      									|
+| Linear Activation					|												|
 
-![alt text][image1]
+| Fully connected		| input 100, output 50      									|
+| Linear Activation					|												|
+| Fully connected		| input 50, output 10      									|
+| Linear Activation					|												|
+| Fully connected		| input 10, output 1      									|
+| Linear Activation					|												|
+
 
 #### 3.3. Creation of the Training Set & Training Process
 

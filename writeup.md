@@ -19,12 +19,12 @@ The goals / steps of this project are the following:
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
-### Rubric Points
+### 0. Rubric Points
 Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
-### Files Submitted & Code Quality
+### 1. Files Submitted & Code Quality
 
-#### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
+#### 1.1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
 * **model.py** Contains the script to create and train the model.
@@ -36,46 +36,46 @@ My project includes the following files:
 Extra file:
 * **Visualizations.ipynb** Notebook that contains the visualizations I used to create this report, and the process of balancing the dataset.
 
-#### 2. Submission includes functional code
+#### 1.2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the first track by executing 
 ```sh
 python drive.py model.h5
 ```
 
-#### 3. Submission code is usable and readable
+#### 1.3. Submission code is usable and readable
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-### Model Architecture and Training Strategy
+### 2. Model Architecture and Training Strategy
 
-#### 1. An appropriate model architecture has been employed
+#### 2.1. An appropriate model architecture has been employed
 
-For my final model, I use the [Model nVidia Autonomous Car Group](https://arxiv.org/pdf/1604.07316v1.pdf) (cnn_models.py line 32). In section "2. Final Model Architecture" it can be observed a more detailed description of this CNN. My implementation includes RELU layers to introduce nonlinearity, a Keras lambda layer for normalization of the data and a Keras Cropping2d layer (cnn_models.py lines 8-9).
+For my final model, I use the [nVidia Autonomous vehicle Model](https://arxiv.org/pdf/1604.07316v1.pdf) (cnn_models.py line 32). In section "3.2. Final Model Architecture" it can be observed a more detailed description of this CNN. My implementation includes RELU layers to introduce nonlinearity, a Keras lambda layer for normalization of the data and a Keras Cropping2d layer (cnn_models.py lines 8-9).
 
-#### 2. Attempts to reduce overfitting in the model
+#### 2.2. Attempts to reduce overfitting in the model
 
 I did not to modify the model by applying regularization techniques like Dropout or Max pooling. Instead, I concentrated on the following approaches:
 * I used only one training epoch.
 * I used augmentation data methods: I used counter clockwise and clockwise driving data,  I changed the brightness of some of the images (model.py line 10), and flipped the images (model.py lines 38-40).
 * My model was trained and validated on different data sets to ensure that the model was not overfitting (model.py line 64). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
-#### 3. Model parameter tuning
+#### 2.3. Model parameter tuning
 
 The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 73).
 
-#### 4. Appropriate training data
+#### 2.4. Appropriate training data
 
-The training and validation datasets were selected from a balanced subset of the Udacity dataset. I used a combination of the three cameras: center, left and right, using a correction factor for the steering angles of 0.2 (0.2 for the left, -0.2 for the right). The original dataset was balanced with the goal of improving the efficiency of the classifier in the first track. The steps of this data balancing can be observed in the section "3. Creation of the Training Set & Training Process" and in the Notebook [balance_and_visualization.ipynb](https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/balance_and_visualization.ipynb).
+The training and validation datasets were selected from a balanced subset of the Udacity dataset. I used a combination of the three cameras: center, left and right, using a correction factor for the steering angles of 0.2 (0.2 for the left, -0.2 for the right). The original dataset was balanced with the goal of improving the efficiency of the classifier in the first track. The steps of this data balancing can be observed in the section "3.3. Creation of the Training Set & Training Process" and in the Notebook [balance_and_visualization.ipynb](https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/balance_and_visualization.ipynb).
 
 In this balanced dataset, I duplicate the data through the flipping of all the images, and I augment the images of the classes lacking data, that is, classes where: abs(angle)>0.5 (0.5~12.5 in the simulator), by changing the brightness of the original and flipped image. (model.py lines 38-52)
 
-### Model Architecture and Training Strategy
+### 3. Model Architecture and Training Strategy
 
-#### 1. Solution Design Approach
+#### 3.1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+I used 3 types of networks: a linear regression model, a lenet model, and, my final model, a nVidia autonomous vehicle model. I took an iterative approach for the tests with this networks. For this three models, I used the Udacity sample driving data.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+Once I verified that my scripts were working correctly, I added a preprocessing layer and a clipping layer to the beginning of my models (x). After this, I started my second iteration, using the lenet model. When I trained this model and used it on the first track of the simulator, the car navigates very close to the curves, and on a section of the road where the edge is not marked (see figure), it went off the road.
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
@@ -87,7 +87,7 @@ The final step was to run the simulator to see how well the car was driving arou
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
-#### 2. Final Model Architecture
+#### 3.2. Final Model Architecture
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
 
@@ -95,7 +95,7 @@ Here is a visualization of the architecture (note: visualizing the architecture 
 
 ![alt text][image1]
 
-#### 3. Creation of the Training Set & Training Process
+#### 3.3. Creation of the Training Set & Training Process
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 

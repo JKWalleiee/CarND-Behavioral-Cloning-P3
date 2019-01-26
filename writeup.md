@@ -82,7 +82,7 @@ Once I verified that my scripts were working correctly, I added a preprocessing 
 
 In my third iteration, I trained the nvidia model, using the complete Udacity sample dataset. With this model, the car navigated very well on the straights sections, staying in the center, however it had problems in the corners and ended up leaving the road in the same section as the lenet model.
 
-From the results of my third iteration and the distribution of the dataset (section y), I decided to make a balancing of the data, to avoid the model from specializing in the straight sections (steering angle of zero), where there are peaks in the complete dataset. In addition, I added flipped images to prevent biases towards a road direction, and increased the number of images in classes lacking data (abs (angle)> 0.5, 0.5 ~ 12.5 in the simulator). Using these modifications to the training data, I trained the nvidia model and tested in the simulator. With this model, the car is able to drive autonomously around the first track without leaving the road, presenting some vibrations in the straight sections. This leads me to think that the CNN sacrifices a bit of stability in the straight sections of the road, in exchange for greater efficiency in the curves.
+From the results of my third iteration and the distribution of the dataset (section "3.3. Creation of the Training Set & Training Process"), I decided to make a balancing of the data, to avoid the model from specializing in the straight sections (steering angle of zero), where there are peaks in the complete dataset. In addition, I added flipped images to prevent biases towards a road direction, and increased the number of images in classes lacking data (abs (angle)> 0.5, 0.5 ~ 12.5 in the simulator). Using these modifications to the training data, I trained the nvidia model and tested in the simulator. With this model, the car is able to drive autonomously around the first track without leaving the road, presenting some vibrations in the straight sections. This leads me to think that the CNN sacrifices a bit of stability in the straight sections of the road, in exchange for greater efficiency in the curves.
 
 ![Final test](./info_output/Success.png)
 
@@ -109,7 +109,6 @@ The final model architecture is shown in the following table:
 | RELU					|												|
 | Fully connected		| input 8448, output 100      									|
 | Linear Activation					|												|
-
 | Fully connected		| input 100, output 50      									|
 | Linear Activation					|												|
 | Fully connected		| input 50, output 10      									|

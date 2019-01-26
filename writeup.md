@@ -73,29 +73,46 @@ In this balanced dataset, I duplicate the data through the flipping of all the i
 
 #### 3.1. Solution Design Approach
 
-I used 3 types of networks: a linear regression model, a lenet model, and, my final model, a nVidia autonomous vehicle model. I took an iterative approach for the tests with this networks. For this three models, I used the Udacity sample driving data.
+I used 3 types of networks: a linear regression model (cnn_models.py line 12), a [lenet model](http://yann.lecun.com/exdb/lenet/) (cnn_models.py line 19), and, my final model, a nVidia autonomous vehicle model (cnn_models.py line 32). I took an iterative approach for the tests with this networks. For this three models, I used the Udacity sample driving data.
 
-Once I verified that my scripts were working correctly, I added a preprocessing layer and a clipping layer to the beginning of my models (x). After this, I started my second iteration, using the lenet model. When I trained this model and used it on the first track of the simulator, the car navigates very close to the curves (fig. 3.1), and on a section of the road where the edge is not marked (fig. 3.2), it went off the road.
+Once I verified that my scripts were working correctly, I added a preprocessing layer and a clipping layer to the beginning of my models (section "3.2. Final Model Architecture"). After this, I started my second iteration, training the lenet model with the complete Udacity sample dataset. When I used this model on the first track of the simulator, the car navigates very close to the curves, and on a section of the road where the edge is not marked, it went off the road.
 
+![Lenet - Close to curves](./info_output/lenet_close_curves.png)
+![problematic road section](./info_output/Problem.png)
 
-![Augmented Image - Rotation](./info_output/cropped_image.jpg "image title")
-![Augmented Image - Rotation](./info_output/cropped_image.jpg "image title")
+In my third iteration, I trained the nvidia model, using the complete Udacity sample dataset. With this model, the car navigated very well on the straights sections, staying in the center, however it had problems in the corners and ended up leaving the road in the same section as the lenet model.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
+From the results of my third iteration and the distribution of the dataset (section y), I decided to make a balancing of the data, to avoid the model from specializing in the straight sections (steering angle of zero), where there are peaks in the complete dataset. In addition, I added flipped images to prevent biases towards a road direction, and increased the number of images in classes lacking data (abs (angle)> 0.5, 0.5 ~ 12.5 in the simulator). Using these modifications to the training data, I trained the nvidia model and tested in the simulator. With this model, the car is able to drive autonomously around the first track without leaving the road, presenting some vibrations in the straight sections. This leads me to think that the CNN sacrifices a bit of stability in the straight sections of the road, in exchange for greater efficiency in the curves.
 
-To combat the overfitting, I modified the model so that ...
+![Final test](./info_output/Success.png)
 
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+This model was tested in two of the simulator modes: "Fastest" and "Fantastic" (which I think are the "easy" and "harder" modes for the model, respectively). The test video of this last model can be found in this [repository](https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/video.mp4) (or with this Project Submission).
 
 #### 3.2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture is shown in the following table:
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+| Layer         		|     Description	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| Input         		| 160x320x3 RGB image   							| 
+| Lambda         		| Normalization layer, outputs 160x320x3		| 
+| Cropping2D     	| cropping layer, outputs 90x320x3 	|
+| Convolution2D 5x5     	| kernel: (5,5), strides: (2,2), filters: (24)	|
+| RELU					|												|
+| Convolution2D 5x5     	| kernel: (5,5), strides: (2,2), filters: (36)	|
+| RELU					|												|
+| Convolution2D 5x5     	| kernel: (5,5), strides: (2,2), filters: (48)	|
+| RELU					|												|
+| Convolution2D 5x5     	| kernel: (3,3), strides: (1,1), filters: (64)	|
+| RELU					|												|
+| Convolution2D 5x5     	| kernel: (3,3), strides: (1,1), filters: (64)	|
+| RELU					|												|
+| Fully connected		| input 400, output 120      									|
+| RELU					|												|
+| Dropout					|					50% keep (Train)							|
+| Fully connected		| input 120, output 84      									|
+| RELU					|												|
+| Fully connected		| input 84, output 43      									|
 
 ![alt text][image1]
 

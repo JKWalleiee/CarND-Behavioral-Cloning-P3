@@ -79,6 +79,7 @@ Once I verified that my scripts were working correctly, I added a preprocessing 
 
 
 ![Augmented Image - Rotation](./info_output/cropped_image.jpg "image title")
+![Augmented Image - Rotation](./info_output/cropped_image.jpg "image title")
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 

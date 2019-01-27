@@ -53,10 +53,11 @@ For my final model, I use the [nVidia Autonomous vehicle Model](https://arxiv.or
 
 #### 2.2. Attempts to reduce overfitting in the model
 
-I did not to modify the model by applying regularization techniques like Dropout or Max pooling. Instead, I concentrated on the following approaches:
+I did not to modify the model by applying regularization techniques like Dropout. Instead, I concentrated on the following approaches:
 * I used only one training epoch.
 * I used augmentation data methods: I used counter clockwise and clockwise driving data,  I changed the brightness of some of the images (model.py line 10), and flipped the images (model.py lines 38-40).
-* My model was trained and validated on different data sets to ensure that the model was not overfitting (model.py line 64). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+* My model was trained and validated on different data sets to ensure that the model was not overfitting (model.py line 64). 
+* The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 2.3. Model parameter tuning
 
@@ -74,7 +75,7 @@ In this balanced dataset, I duplicate the data through the flipping of all the i
 
 I used 3 types of networks: a linear regression model (cnn_models.py line 12), a [lenet model](http://yann.lecun.com/exdb/lenet/) (cnn_models.py line 19), and, my final model, a nVidia autonomous vehicle model (cnn_models.py line 32). I took an iterative approach for the tests with this networks. For this three models, I used the Udacity sample driving data.
 
-Once I verified that my scripts were working correctly, I added a preprocessing layer and a clipping layer to the beginning of my models (section "3.2. Final Model Architecture"). After this, I started my second iteration, training the lenet model with the complete Udacity sample dataset. When I used this model on the first track of the simulator, the car navigates very close to the curves, and on a section of the road where the edge is not marked, it went off the road.
+Once I verified that my scripts were working correctly, I added a preprocessing layer and a cropping layer to the beginning of my models (section "3.2. Final Model Architecture"). After this, I started my second iteration, training the lenet model with the complete Udacity sample dataset. When I used this model on the first track of the simulator, the car navigates very close to the curves, and on a section of the road where the edge is not marked, it went off the road.
 
 ![Lenet - Close to curves](./info_output/lenet_close_curves.png)
 ![problematic road section](./info_output/Problem.png)
@@ -122,7 +123,7 @@ To create the training data, I used the Udacity sample data as a base (8036 samp
 
 ![Hist_original_dataset](./info_output/Hist_original_dataset.jpg)
 
-Here, it can be observed a very high peak for the data with a steering angle of zero (4361 images) in comparison with the rest of the data. From the tests conducted in the CNN training with the original dataset, I noticed that my model achieves better results when its trained with a balanced dataset. This balancing of the data can be found in the file [balance_and_visualization.ipynb] (https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/balance_and_visualization.ipynb). Below is a summary of the balancing process:
+Here, it can be observed a very high peak for the data with a steering angle of zero (4361 images) in comparison with the rest of the data. From the tests conducted in the CNN training with the original dataset, I noticed that my model achieves better results when its trained with a balanced dataset. This balancing of the data can be found in the file [balance_and_visualization.ipynb](https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/balance_and_visualization.ipynb). Below is a summary of the balancing process:
 
 * First, I reduced the amount of data with steering angle of zero to a value comparable with the rest of the classes.
 * Second, I used the three images from the filtered dataset (center, left and right), using a correction factor for the steering angles of 0.2 (0.2 for the left, -0.2 for the right). The images of the side cameras were used as recovery samples, that is, images that teach the network what to do to drive the car back to the center of the road, when it is very close to the edges of the road.
@@ -150,19 +151,19 @@ The video ["video.mp4"](https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P
 
 ### OPTIONAL - Second track.
 
-For track 2, I first loaded my model up to this point and tested it in simulation. My model allowed the car to safely navigate on runway 2 until it founded sharp turns, where the car leaved the road. Then, I decided to collect data from the second track in the training mode of the simulator. Using these new data, I balanced them, loaded the model I had up to this point and retrained with the new dataset. I decided to retrain the network with the new data separately due to two reasons:
+For the second track, I first loaded my model up to this point and tested it in simulation. My model allowed the car to safely navigate on the second track until it founded sharp turns (sharper than the curves of the first track), where the car left the road. Then, I decided to collect data from the second track in the training mode of the simulator. Using these new data, I balanced them, loaded the model I had up to this point and retrained with the new dataset. I decided to retrain the network with the new data separately due to two reasons:
 
 * Initially, my goal was use the Udacity dataset for the first track. When I realized that my model did not work for the second track, I had already completed the mandatory points of the project and, therefore, I decided not to modify my training process.
 
 * I wanted to take the opportunity to test what would happen to the model on the first track, if I used tranfer learning techniques focused on the second track.
 
-I did several tests, retrained the whole network, I freezed the convolutions layers weights, reduced the learning rate, and got a model that works satisfactorily on the [second track](). However, when testing this model on the first track, the car remained unstable and very close to the curves. This may be due to one or more of the following reasons:
+I did several tests, retrained the whole network, I freezed the convolutions layers weights, reduced the learning rate, and got a model that works satisfactorily on the second track. However, when testing this model on the first track, the car remained unstable and very close to the curves. This may be due to one or more of the following reasons:
 
 * My driving behavior. In some areas of the second track, I decided to mantain the car on the road controlling the speed instead of navigating on the center of the road. This may have damaged the behavior learned from the Udacity data.
 
 * I performed a separate training for the data from the second track. In this case, the model, optimized for the first track, updates its weights using information only from the second track. In a real implementation it would be more optimal to use the data from both tracks in the same training.
 
-* I collected data from the full second track. Instead , a good idea could be to collect images of problematic areas for my trained model.
+* I collected data from the full second track. Instead , a good idea could be to collect images only from problematic areas for my trained model.
 
 The task of using tranfer learning from a model (trained for the first track), to the data of the second track, with the goal that the final model performs correctly in both tracks, presents several complications. This process implies a correct tunning of the parameters, and doing several tests: freeze the convolutional layers weights, modify (minimize) the learning rate, etc. This complicates the training unnecessarily.
 

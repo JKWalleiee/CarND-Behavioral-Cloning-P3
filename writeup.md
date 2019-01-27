@@ -119,9 +119,27 @@ The final model architecture is shown in the following table:
 
 #### 3.3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+To create the training data, I used the Udacity sample data as a base (8036 samples). Here is bar graph that shows how the original Udacity dataset is distributed through the different steering angles, using bins with 0.01 step.
 
-![alt text][image2]
+![Hist_original_dataset](./info_output/Hist_original_dataset.jpg)
+
+Here, it can be observed a very high peak for the data with a steering angle of zero (4361 images) in comparison with the rest of the data. From the tests conducted in the CNN training with the original dataset, I noticed that my model achieves better results when its trained with a balanced dataset. This balancing of the data can be found in the file [balance_and_visualization.ipynb] (https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/balance_and_visualization.ipynb). Below is a summary of the balancing process:
+
+* First, I reduced the amount of data with steering angle of zero to a value comparable with the rest of the classes.
+* Second, I used the three images from the filtered dataset (center, left and right), using a correction factor for the steering angles of 0.2 (0.2 for the left, -0.2 for the right). The images of the side cameras were used as recovery samples, that is, images that teach the network what to do to drive the car back to the center of the road, when it is very close to the edges of the road.
+* Finally, I calculated the average of the data in the histogram up to this point, and halved the images of the steering angle bins with more data than the calculated average value.
+
+Below is a bar graph that shows the histogram of the final balanced dataset (5738 samples).
+
+![Hist_Final_balanced_data](./info_output/Hist_Final_balanced_data.jpg)
+
+I loaded the csv file of this balanced dataset, shuffle the data and divided into a training set (80%) and a validation set (20%). The images of the dataset were read in a generator, to minimize memory consumption. In addition, in the generator, I added flipped images to prevent biases towards a road direction, and increased the number of images in classes lacking data (abs (angle)> 0.5, 0.5 ~ 12.5 in the simulator). Bellow it can be observed some of the samples of the three "types" of images in the training dataset (original, flipped and augmented (change brightness) )
+
+![dataset_exploration](./info_output/dataset_exploration.jpg)
+
+It is important to remember that the change in brightness only applies to images where abs(angle)> 0.5. In the previous figure this image type is shown for other ranges for visualization purposes.
+
+
 
 I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
 

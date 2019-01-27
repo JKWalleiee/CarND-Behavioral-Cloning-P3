@@ -1,4 +1,3 @@
-1081s - loss: 0.0075 - acc: 7.5927e-04 - val_loss: 0.0250 - val_acc: 0.0000e+00
 # **Behavioral Cloning Project**
 ---
 The goals / steps of this project are the following:
@@ -133,32 +132,31 @@ Below is a bar graph that shows the histogram of the final balanced dataset (573
 
 ![Hist_Final_balanced_data](./info_output/Hist_Final_balanced_data.jpg)
 
-I loaded the csv file of this balanced dataset, shuffle the data and divided into a training set (80%) and a validation set (20%). The images of the dataset were read in a generator, to minimize memory consumption. In addition, in the generator, I added flipped images to prevent biases towards a road direction, and increased the number of images in classes lacking data (abs (angle)> 0.5, 0.5 ~ 12.5 in the simulator). Bellow it can be observed some of the samples of the three "types" of images in the training dataset (original, flipped and augmented (change brightness) )
+I loaded the csv file of this balanced dataset, shuffle the data and divided into a training set (80%) and a validation set (20%). The images of the dataset were read from disk and divided in batches in a generator (model.py lines 18-55), to minimize memory consumption. In addition, in the generator, I added flipped images to prevent biases towards a road direction, and increased the number of images in classes lacking data (abs (angle)> 0.5, 0.5 ~ 12.5 in the simulator). Bellow it can be observed some of the samples of the three "types" of images in the training dataset (original, flipped and augmented (change brightness) )
 
 ![dataset_exploration](./info_output/dataset_exploration.jpg)
 
 It is important to remember that the change in brightness only applies to images where abs(angle)> 0.5. In the previous figure this image type is shown for other ranges for visualization purposes.
 
+My model has two preprocessing layers, one for normalization and another for cropping the image. the CNN performs this process of cropping of the image to receive only the important areas of the image. Below is an example of the result of this cropping process.
+
+![cropped_image](./info_output/cropped_image.jpg)
+
+The training and validation generators were fed into the training of the network through the fit_generator method (model.py line 85). For the training I used only one epoch, and an Adam optimizer so that manually training the learning rate was not necessary. My model stops training when the "val_loss" quantity has stopped improving (model.py lines 78-81), and in the end the best model is saved in the [model.h5](https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/model.h5) file.
+
+1081s - loss: 0.0075 - acc: 7.5927e-04 - val_loss: 0.0250 - val_acc: 0.0000e+00
+
+The video ["video.mp4"](https://github.com/JKWalleiee/CarND-Behavioral-Cloning-P3/blob/master/video.mp4) shows the final result of my model in the first track of the simulator.
+
+### OPTIONAL - Second track.
+
+For track 2, I first loaded my model up to this point and tested it in simulation. My model allowed the car to safely navigate on runway 2 until it founded sharp turns, where the car leaved the road. Then, I decided to collect data from the second track in the training mode of the simulator. Using these new data, I balanced them, loaded the model I had up to this point and retrained with the new dataset. I decided to retrain the network with the new data separately due to two reasons:
+
+* Initially, my goal was use the Udacity dataset for the first track. When I realized that my model did not work for the second track, I had already completed the mandatory points of the project and, therefore, I decided not to modify my training process.
+
+* I wanted to take the opportunity to test what would happen to the model on the first track, if I used tranfer learning techniques focused on the second track.
 
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
-
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.

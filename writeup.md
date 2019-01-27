@@ -156,6 +156,16 @@ For track 2, I first loaded my model up to this point and tested it in simulatio
 
 * I wanted to take the opportunity to test what would happen to the model on the first track, if I used tranfer learning techniques focused on the second track.
 
+I did several tests, retrained the whole network, I freezed the convolutions layers weights, reduced the learning rate, and got a model that works satisfactorily on the [second track](). However, when testing this model on the first track, the car remained unstable and very close to the curves. This may be due to one or more of the following reasons:
+
+* My driving behavior. In some areas of the second track, I decided to mantain the car on the road controlling the speed instead of navigating on the center of the road. This may have damaged the behavior learned from the Udacity data.
+
+* I performed a separate training for the data from the second track. In this case, the model, optimized for the first track, updates its weights using information only from the second track. In a real implementation it would be more optimal to use the data from both tracks in the same training.
+
+* I collected data from the full second track. Instead , a good idea could be to collect images of problematic areas for my trained model.
+
+The task of using tranfer learning from a model (trained for the first track), to the data of the second track, with the goal that the final model performs correctly in both tracks, presents several complications. This process implies a correct tunning of the parameters, and doing several tests: freeze the convolutional layers weights, modify (minimize) the learning rate, etc. This complicates the training unnecessarily.
+
 
 
 
